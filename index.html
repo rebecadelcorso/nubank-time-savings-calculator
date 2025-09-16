@@ -536,20 +536,41 @@
                 return;
             }
 
-            // Calcular frequências por dia
-            const frequencyMultipliers = {
-                'daily': 1,
-                'weekly': 1/7,
-                'biweekly': 1/14,
-                'monthly': 1/22, // 22 dias úteis por mês
-                'quarterly': 1/66, // 3 meses = 66 dias úteis
-                'yearly': 1/264 // 12 meses = 264 dias úteis
-            };
-
-            const dailyExecutions = frequencyMultipliers[frequency];
-            const dailySavingsMinutes = savingsPerExecution * dailyExecutions;
-            const monthlySavingsMinutes = dailySavingsMinutes * 22; // 22 dias úteis
-            const yearlySavingsMinutes = monthlySavingsMinutes * 12;
+            // Calcular savings direto por período para mais precisão
+            let dailySavingsMinutes, monthlySavingsMinutes, yearlySavingsMinutes;
+            
+            switch(frequency) {
+                case 'daily':
+                    dailySavingsMinutes = savingsPerExecution;
+                    monthlySavingsMinutes = savingsPerExecution * 22; // 22 dias úteis
+                    yearlySavingsMinutes = monthlySavingsMinutes * 12;
+                    break;
+                case 'weekly':
+                    dailySavingsMinutes = savingsPerExecution / 7;
+                    monthlySavingsMinutes = savingsPerExecution * 4.33; // 52 semanas ÷ 12 meses
+                    yearlySavingsMinutes = savingsPerExecution * 52;
+                    break;
+                case 'biweekly':
+                    dailySavingsMinutes = savingsPerExecution / 14;
+                    monthlySavingsMinutes = savingsPerExecution * 2.17; // 26 bi-weeks ÷ 12 meses
+                    yearlySavingsMinutes = savingsPerExecution * 26;
+                    break;
+                case 'monthly':
+                    dailySavingsMinutes = savingsPerExecution / 22;
+                    monthlySavingsMinutes = savingsPerExecution;
+                    yearlySavingsMinutes = savingsPerExecution * 12;
+                    break;
+                case 'quarterly':
+                    dailySavingsMinutes = savingsPerExecution / 66;
+                    monthlySavingsMinutes = savingsPerExecution / 3;
+                    yearlySavingsMinutes = savingsPerExecution * 4;
+                    break;
+                case 'yearly':
+                    dailySavingsMinutes = savingsPerExecution / 264;
+                    monthlySavingsMinutes = savingsPerExecution / 12;
+                    yearlySavingsMinutes = savingsPerExecution;
+                    break;
+            }
 
             // Atualizar interface
             document.getElementById('savingsPerExecution').textContent = formatTime(savingsPerExecution);
