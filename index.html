@@ -536,38 +536,38 @@
                 return;
             }
 
-            // Calcular savings direto por período para mais precisão
+            // Calcular savings com lógica consistente baseada em dias úteis
             let dailySavingsMinutes, monthlySavingsMinutes, yearlySavingsMinutes;
             
             switch(frequency) {
                 case 'daily':
                     dailySavingsMinutes = savingsPerExecution;
-                    monthlySavingsMinutes = savingsPerExecution * 22; // 22 dias úteis
+                    monthlySavingsMinutes = savingsPerExecution * 22; // 22 dias úteis por mês
                     yearlySavingsMinutes = monthlySavingsMinutes * 12;
                     break;
                 case 'weekly':
-                    dailySavingsMinutes = savingsPerExecution / 7;
-                    monthlySavingsMinutes = savingsPerExecution * 4.33; // 52 semanas ÷ 12 meses
-                    yearlySavingsMinutes = savingsPerExecution * 52;
+                    dailySavingsMinutes = savingsPerExecution / 5; // 5 dias úteis por semana
+                    monthlySavingsMinutes = dailySavingsMinutes * 22; // manter consistência: daily × 22
+                    yearlySavingsMinutes = monthlySavingsMinutes * 12;
                     break;
                 case 'biweekly':
-                    dailySavingsMinutes = savingsPerExecution / 14;
-                    monthlySavingsMinutes = savingsPerExecution * 2.17; // 26 bi-weeks ÷ 12 meses
-                    yearlySavingsMinutes = savingsPerExecution * 26;
+                    dailySavingsMinutes = savingsPerExecution / 10; // 10 dias úteis por quinzena
+                    monthlySavingsMinutes = dailySavingsMinutes * 22; // manter consistência: daily × 22
+                    yearlySavingsMinutes = monthlySavingsMinutes * 12;
                     break;
                 case 'monthly':
-                    dailySavingsMinutes = savingsPerExecution / 22;
+                    dailySavingsMinutes = savingsPerExecution / 22; // distribuir por 22 dias úteis
                     monthlySavingsMinutes = savingsPerExecution;
                     yearlySavingsMinutes = savingsPerExecution * 12;
                     break;
                 case 'quarterly':
-                    dailySavingsMinutes = savingsPerExecution / 66;
-                    monthlySavingsMinutes = savingsPerExecution / 3;
-                    yearlySavingsMinutes = savingsPerExecution * 4;
+                    dailySavingsMinutes = savingsPerExecution / 66; // 66 dias úteis por trimestre
+                    monthlySavingsMinutes = dailySavingsMinutes * 22; // manter consistência: daily × 22
+                    yearlySavingsMinutes = monthlySavingsMinutes * 12;
                     break;
                 case 'yearly':
-                    dailySavingsMinutes = savingsPerExecution / 264;
-                    monthlySavingsMinutes = savingsPerExecution / 12;
+                    dailySavingsMinutes = savingsPerExecution / 264; // 264 dias úteis por ano
+                    monthlySavingsMinutes = dailySavingsMinutes * 22; // manter consistência: daily × 22
                     yearlySavingsMinutes = savingsPerExecution;
                     break;
             }
